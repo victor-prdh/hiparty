@@ -1,7 +1,14 @@
 api_platform:
+    title: 'hyparty'
+    description: "API de l'app web et mobile hyparty."
+    version: '0.1'
     mapping:
         paths: ['%kernel.project_dir%/src/Entity']
     patch_formats:
         json: ['application/merge-patch+json']
     swagger:
         versions: [3]
+        api_keys:
+          apiKey:
+            name: Authorization
+            type: header

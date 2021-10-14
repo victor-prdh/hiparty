@@ -1,3 +1,15 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+authentication_token:
+    path: /api/login
+    methods: ['POST']
+    
+gesdinet_jwt_refresh_token:
+  path: /api/token/refresh
+  controller: gesdinet.jwtrefreshtoken::refresh
+
+party_near:
+  path: "/api/parties/{lat}/{lng}/{distance}"
+  methods: ['GET']
+  defaults:
+    _controller: '\App\Controller\PartyController::partyNear'
+    _api_ressource_class: 'App\Entity\Party'
+    _api_collection_operation_name: 'party_near'
