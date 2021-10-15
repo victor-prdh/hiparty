@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
@@ -20,9 +21,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      normalizationContext={"groups"={"user:read"}},
  *      denormalizationContext={"groups"={"user:write"}},
  *      collectionOperations={
- *         "get"={"security"="is_granted('ROLE_USER')"},
- *         "post"
+ *         "get"={"security"="is_granted('ROLE_admin')"},
+ *         "post",
  *      },
+ *        itemOperations={
+ *              "get"={"access_control"="is_granted('ROLE_USER')"},
+ *              "put"={
+ *                  "access_control"="is_granted('ROLE_USER') and previous_object == user",
+ *                  "access_control_message"="Seul l'organisateur ou organisatrice peut modifier la fête !"
+ *              },
+ *              "delete"={
+ *                  "access_control"="is_granted('ROLE_USER') and previous_object == user",
+ *                  "access_control_message"="Seul l'organisateur ou organisatrice peut supprimer la fête !"
+ *              }
+ *          },
  * )
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -292,4 +304,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
 }

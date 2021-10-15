@@ -15,11 +15,27 @@ use Doctrine\ORM\Mapping as ORM;
  *      normalizationContext={"groups"={"party:read"}},
  *      denormalizationContext={"groups"={"party:write"}},
  *      collectionOperations={
- *         "get"={"security"="is_granted('ROLE_USER')"},
+ *         "get"={"security"="is_granted('ROLE_ADMIN')"},
  *         "post"={"security"="is_granted('ROLE_CONTRIB')"},
- *          "party_near"={"route_name"="party_near", "security"="is_granted('ROLE_CONTRIB')"}
- *     }
+ *         "party_near"={"route_name"="party_near", "security"="is_granted('ROLE_CONTRIB')"},
+ *          
+ *       },
+ *        itemOperations={
+ *              "get"={
+ *                  "normalization_context"={"groups"="party:read"},
+ *              },
+ *              "put"={
+ *                  "access_control"="is_granted('ROLE_USER') and previous_object.getOrganisateur() == user",
+ *                  "access_control_message"="Seul l'organisateur ou organisatrice peut modifier la fête !"
+ *              },
+ *              "delete"={
+ *                  "access_control"="is_granted('ROLE_USER') and previous_object.getOrganisateur() == user",
+ *                  "access_control_message"="Seul l'organisateur ou organisatrice peut supprimer la fête !"
+ *              }
+ *          },
  * )
+ * 
+ * 
  * @ORM\Entity(repositoryClass=PartyRepository::class)
  */
 class Party
@@ -152,6 +168,13 @@ class Party
      * 
      */
     private $participant;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * 
+     * @Groups({"party:read", "party:write"})
+     */
+    private $partytime;
 
     public function __construct()
     {
@@ -420,6 +443,18 @@ class Party
     public function removeParticipant(User $participant): self
     {
         $this->participant->removeElement($participant);
+
+        return $this;
+    }
+
+    public function getPartytime(): ?\DateTimeInterface
+    {
+        return $this->partytime;
+    }
+
+    public function setPartytime(\DateTimeInterface $partytime): self
+    {
+        $this->partytime = $partytime;
 
         return $this;
     }
