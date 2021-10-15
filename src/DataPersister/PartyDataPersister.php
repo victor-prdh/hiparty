@@ -5,6 +5,7 @@ namespace App\DataPersister;
 use App\Entity\Party;
 use Doctrine\ORM\EntityManagerInterface;
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
+use Symfony\Component\Security\Core\Security;
 
 /**
  *
@@ -12,10 +13,13 @@ use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 class PartyDataPersister implements ContextAwareDataPersisterInterface
 {
     private $_entityManager;
+    private $security;
     public function __construct(
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        Security $security
     ) {
         $this->_entityManager = $entityManager;
+        $this->security = $security;
     }
 
     /**
@@ -42,6 +46,7 @@ class PartyDataPersister implements ContextAwareDataPersisterInterface
             
             $data->setLongitude($lng);
             $data->setLatitude($lat);
+            $data->setOrganisateur($this->security->getUser());
         }
 
         $this->_entityManager->persist($data);

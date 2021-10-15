@@ -20,8 +20,14 @@ class PartyController extends AbstractController
         //select *, ST_Distance_Sphere(point(longitude,latitude), point(3.959227,48.302123)) as distance FROM party
 
         
-        $party = $partyRepository->findNearParty($lat, $lng, $distance);
-        $data = ["status" => "c'est good", 'lat' => $lat, 'lng' => $lng, "party" => $party];
+        $partys = $partyRepository->findNearParty($lat, $lng, $distance);
+//        $fete = [];
+//        foreach ($partys as $key => $party) {
+//            $party["organisateur_id"] = "/api/users/".$party["organisateur_id"];
+            
+//            $fete = $party;
+//        }
+        $data = ["status" => "c'est good", 'lat' => $lat, 'lng' => $lng, "party" => $partys];
         return $this->json($data);
     }
 }
