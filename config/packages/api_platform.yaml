@@ -1,4 +1,5 @@
 api_platform:
+    show_webby: false
     title: 'hyparty'
     description: "API de l'app web et mobile hyparty."
     version: '0.1'

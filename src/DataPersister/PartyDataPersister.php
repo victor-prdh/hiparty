@@ -49,6 +49,25 @@ class PartyDataPersister implements ContextAwareDataPersisterInterface
             $data->setOrganisateur($this->security->getUser());
         }
 
+        if ($data->getPhoto()) {
+            $b64Photo = $data->getPhoto();
+            
+            $ROOT = \dirname(__DIR__);
+
+            $img = explode( ',', $b64Photo );
+            $extension = explode('/', mime_content_type($b64Photo))[1];
+            $image = base64_decode($img[1]);
+            $imgName = rand() .'.'. $extension;
+            
+            file_put_contents($ROOT.'/../public/uploads/'. $imgName , $image);
+
+            //imagejpeg($image, $ROOT.'../public/uploads/' . $new_image_name, 75);
+
+            $data->setPhoto('/uploads/'.$imgName);
+            
+
+        }
+
         $this->_entityManager->persist($data);
         $this->_entityManager->flush();
     }

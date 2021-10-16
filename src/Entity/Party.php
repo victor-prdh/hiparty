@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  *      normalizationContext={"groups"={"party:read"}},
  *      denormalizationContext={"groups"={"party:write"}},
  *      collectionOperations={
- *         "get"={"security"="is_granted('ROLE_ADMIN')"},
+ *         "get",
  *         "post"={"security"="is_granted('ROLE_CONTRIB')"},
  *         "party_near"={"route_name"="party_near", "security"="is_granted('ROLE_CONTRIB')"},
  *          
