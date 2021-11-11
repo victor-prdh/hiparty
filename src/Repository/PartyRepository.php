@@ -27,7 +27,7 @@ class PartyRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()
             ->getConnection();
-        $sql = "SELECT party.name, description, price, photo, nb_places, lieux, is_majeur, is_outdoor, is_reserved, reserv_desc, user.name AS orga_name, user.id AS orga_id, user.firstname AS orga_firstname FROM party INNER JOIN user where ST_Distance_Sphere(point(longitude,latitude), point(?,?))/1000 < ? ";
+        $sql = "SELECT party.name, description, price, photo, nb_places, partytime, lieux, is_majeur, is_outdoor, is_reserved, reserv_desc, user.name AS orga_name, user.id AS orga_id, user.firstname AS orga_firstname FROM party INNER JOIN user where ST_Distance_Sphere(point(longitude,latitude), point(?,?))/1000 < ? AND partytime > NOW() ORDER BY partytime ASC";
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(1, $lng);
         $stmt->bindValue(2, $lat);
