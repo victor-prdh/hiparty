@@ -49,7 +49,7 @@ class PartyDataPersister implements ContextAwareDataPersisterInterface
             $data->setOrganisateur($this->security->getUser());
         }
 
-        if ($data->getPhoto()) {
+        if ($data->getPhoto() != null) {
             $b64Photo = $data->getPhoto();
             
             $ROOT = \dirname(__DIR__);
@@ -66,6 +66,8 @@ class PartyDataPersister implements ContextAwareDataPersisterInterface
             $data->setPhoto('/uploads/'.$imgName);
             
 
+        } else {
+            $data->setPhoto('/uploads/default.png');
         }
 
         $this->_entityManager->persist($data);
