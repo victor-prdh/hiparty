@@ -27,7 +27,7 @@ class PartyRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()
             ->getConnection();
-        $sql = "SELECT party.name, description, price, photo, nb_places, partytime, lieux, is_majeur, is_outdoor, is_reserved, reserv_desc, user.name AS orga_name, user.id AS orga_id, user.firstname AS orga_firstname FROM party JOIN user ON party.organisateur_id = user.id where ST_Distance_Sphere(point(longitude,latitude), point(?,?))/1000 < ? AND partytime > NOW() ORDER BY partytime ASC";
+        $sql = "SELECT party.id, party.name, description, price, photo, nb_places, partytime, lieux, is_majeur, is_outdoor, is_reserved, reserv_desc, user.name AS orga_name, user.id AS orga_id, user.firstname AS orga_firstname FROM party JOIN user ON party.organisateur_id = user.id where ST_Distance_Sphere(point(longitude,latitude), point(?,?))/1000 < ? AND partytime > NOW() ORDER BY partytime ASC";
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(1, $lng);
         $stmt->bindValue(2, $lat);
@@ -40,13 +40,29 @@ class PartyRepository extends ServiceEntityRepository
     }
 
 
-    public function test($sqlDistance, $distance)
+    public function getLikedParty($userId)
     {
-        return $this->createQueryBuilder('')
-            ->andWhere("" . $sqlDistance . " < :distance")
-            ->setParameter('distance', $distance)
-            ->getQuery()
-            ->getResult();
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $sql = "SELECT * FROM `party_user` WHERE user_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(1, $userId);
+
+
+        $stmt->execute();
+
+        $partys =$stmt->fetchAll();
+        $data = [];
+
+        foreach ($partys as $party) {
+            $sql = "SELECT * FROM `party` WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindValue(1, $party["party_id"]);
+            $stmt->execute();
+            $data[] = $stmt->fetchAll();
+        }
+
+        return $data;
     }
 
 

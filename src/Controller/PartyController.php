@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Party;
+use App\Entity\User;
 use App\Repository\PartyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,14 +16,31 @@ class PartyController extends AbstractController
      *
      * 
      */
-    public function partyNear(float $lat, float $lng, int $distance,  PartyRepository $partyRepository): Response
+    public function partyNear(float $lat, float $lng, int $distance,  PartyRepository $partyRepository)
     {
-        //select *, ST_Distance_Sphere(point(longitude,latitude), point(3.959227,48.302123)) as distance FROM party
+        
 
         
         $partys = $partyRepository->findNearParty($lat, $lng, $distance);
 
-        $data = ["status" => "c'est good", 'lat' => $lat, 'lng' => $lng, "party" => $partys];
+        $data = ["code" => "200", 'lat' => $lat, 'lng' => $lng, "party" => $partys];
+        return $this->json($data);
+    }
+
+    /**
+     *@Route("/api/parties/liked", name="party_liked", methods={"GET"})
+     */
+    public function partyLiked(PartyRepository $partyRepository)
+    {
+        
+       
+        $jwtUser = $this->getUser();
+        
+        $partys = $partyRepository->getLikedParty($jwtUser->getId());
+        
+        
+
+        $data = ["code" => "200", "party" => $partys];
         return $this->json($data);
     }
 }
