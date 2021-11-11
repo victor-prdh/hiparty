@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Party;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +18,7 @@ class PartyRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Party::class);
+        date_default_timezone_set('Europe/Paris');
     }
 
     /**
@@ -59,9 +61,17 @@ class PartyRepository extends ServiceEntityRepository
             $stmt = $conn->prepare($sql);
             $stmt->bindValue(1, $party["party_id"]);
             $stmt->execute();
-            $data[] = $stmt->fetchAll();
+            $p = $stmt->fetchAll();
+            
+            if(new DateTime($p[0]["partytime"]) > new DateTime()){
+                $data[] = $p[0];
+            }
+            
         }
-
+        
+        $keys = array_column($data, 'partytime');
+        array_multisort($keys, SORT_ASC, $data);
+        
         return $data;
     }
 
