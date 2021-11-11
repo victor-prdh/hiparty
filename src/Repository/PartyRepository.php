@@ -27,8 +27,7 @@ class PartyRepository extends ServiceEntityRepository
 
     public function findNearParty($lat, $lng, $distance)
     {
-        $conn = $this->getEntityManager()
-            ->getConnection();
+        $conn = $this->getEntityManager()->getConnection();
         $sql = "SELECT party.id, party.name, description, price, photo, nb_places, partytime, lieux, is_majeur, is_outdoor, is_reserved, reserv_desc, user.name AS orga_name, user.id AS orga_id, user.firstname AS orga_firstname FROM party JOIN user ON party.organisateur_id = user.id where ST_Distance_Sphere(point(longitude,latitude), point(?,?))/1000 < ? AND partytime > NOW() ORDER BY partytime ASC";
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(1, $lng);
@@ -44,8 +43,7 @@ class PartyRepository extends ServiceEntityRepository
 
     public function getLikedParty($userId)
     {
-        $conn = $this->getEntityManager()
-            ->getConnection();
+        $conn = $this->getEntityManager()->getConnection();
         $sql = "SELECT * FROM `party_user` WHERE user_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(1, $userId);
@@ -73,6 +71,35 @@ class PartyRepository extends ServiceEntityRepository
         array_multisort($keys, SORT_ASC, $data);
         
         return $data;
+    }
+
+    public function partyAddLike($partyId, $userId)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "SELECT * FROM `party_user` WHERE party_id = ? AND user_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(1, $partyId);
+        $stmt->bindValue(2, $userId);
+        $stmt->execute();
+
+        $isLiked =$stmt->fetchAll();
+
+        if(empty($isLiked)){
+            $sql = "INSERT INTO `party_user` (`party_id`, `user_id`) VALUES (?, ?);";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindValue(1, $partyId);
+            $stmt->bindValue(2, $userId);
+            $stmt->execute();
+            return 'Cette soirée est maintenant dans vos favorite';
+        } else {
+            $sql = "DELETE FROM `party_user` WHERE `party_user`.`party_id` = ? AND `party_user`.`user_id` = ?;";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindValue(1, $partyId);
+            $stmt->bindValue(2, $userId);
+            $stmt->execute();
+            return 'Cette soirée est à été supprimé de vos favorite';
+        }
+        
     }
 
 

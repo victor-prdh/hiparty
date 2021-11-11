@@ -6,8 +6,9 @@ use App\Entity\Party;
 use App\Entity\User;
 use App\Repository\PartyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\Request;
 
 class PartyController extends AbstractController
 {
@@ -36,11 +37,35 @@ class PartyController extends AbstractController
        
         $jwtUser = $this->getUser();
         
+        
         $partys = $partyRepository->getLikedParty($jwtUser->getId());
         
         
 
         $data = ["code" => "200", "party" => $partys];
         return $this->json($data);
+    }
+
+    /**
+     *@Route("/api/parties/like", name="party_add_like", methods={"POST"})
+     */
+    public function partyAddLike(PartyRepository $partyRepository, Request $request)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+       
+        $party = json_decode($request->getContent(), true);
+        $userId = $this->getUser()->getId();
+
+        if(isset($party["id"]) && isset($userId)) {
+            $message = $partyRepository->partyAddLike($party["id"], $userId);
+
+            $data = ["code" => "200", 'message' => $message];
+            return $this->json($data);
+        } else {
+            $data = ["code" => "404", 'message' => "La fête n'existe pas !"];
+            return $this->json($data, 404);
+        }
+        
+        
     }
 }

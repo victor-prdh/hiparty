@@ -17,7 +17,6 @@ use Doctrine\ORM\Mapping as ORM;
  *      collectionOperations={
  *         "get",
  *         "post"={"security"="is_granted('ROLE_CONTRIB')"},
- *         "party_near"={"route_name"="party_near", "security"="is_granted('ROLE_CONTRIB')"},
  *          
  *       },
  *        itemOperations={
