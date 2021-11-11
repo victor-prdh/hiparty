@@ -19,26 +19,26 @@ class PartyRepository extends ServiceEntityRepository
         parent::__construct($registry, Party::class);
     }
 
-     /**
-      * @return Party[] Returns an array of Party objects
+    /**
+     * @return Party[] Returns an array of Party objects
      */
-    
+
     public function findNearParty($lat, $lng, $distance)
     {
         $conn = $this->getEntityManager()
             ->getConnection();
-        $sql = "SELECT party.name, description, price, photo, nb_places, partytime, lieux, is_majeur, is_outdoor, is_reserved, reserv_desc, user.name AS orga_name, user.id AS orga_id, user.firstname AS orga_firstname FROM party INNER JOIN user where ST_Distance_Sphere(point(longitude,latitude), point(?,?))/1000 < ? AND partytime > NOW() ORDER BY partytime ASC";
+        $sql = "SELECT party.name, description, price, photo, nb_places, partytime, lieux, is_majeur, is_outdoor, is_reserved, reserv_desc, user.name AS orga_name, user.id AS orga_id, user.firstname AS orga_firstname FROM party JOIN user ON party.organisateur_id = user.id where ST_Distance_Sphere(point(longitude,latitude), point(?,?))/1000 < ? AND partytime > NOW() ORDER BY partytime ASC";
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(1, $lng);
         $stmt->bindValue(2, $lat);
         $stmt->bindValue(3, $distance);
 
         $stmt->execute();
-        
+
 
         return $stmt->fetchAll();
     }
-    
+
 
     public function test($sqlDistance, $distance)
     {
@@ -46,10 +46,9 @@ class PartyRepository extends ServiceEntityRepository
             ->andWhere("" . $sqlDistance . " < :distance")
             ->setParameter('distance', $distance)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    
+
 
     /*
     public function findOneBySomeField($value): ?Party
