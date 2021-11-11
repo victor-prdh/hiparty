@@ -55,7 +55,7 @@ class PartyRepository extends ServiceEntityRepository
         $data = [];
 
         foreach ($partys as $party) {
-            $sql = "SELECT * FROM `party` WHERE id = ?";
+            $sql = "SELECT party.id, party.name, description, price, photo, nb_places, partytime, lieux, is_majeur, is_outdoor, is_reserved, reserv_desc, user.name AS orga_name, user.id AS orga_id, user.firstname AS orga_firstname FROM party JOIN user ON party.organisateur_id = user.id WHERE party.id = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bindValue(1, $party["party_id"]);
             $stmt->execute();
