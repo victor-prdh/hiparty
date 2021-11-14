@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\NewsletterRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=NewsletterRepository::class)
@@ -19,6 +20,10 @@ class Newsletter
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Email(
+     *     message = "L'adresse email '{{ value }}' n'est pas valide."
+     * )
      */
     private $email;
 

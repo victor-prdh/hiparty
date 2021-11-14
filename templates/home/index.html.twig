@@ -1,12 +1,12 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
+        <meta name="description" content="Trouvez les meilleures fêtes proches de chez vous avec HiParty. Finis les mauvaises soirées, vous pouvez enfin vous amuser." />
         <meta name="author" content="" />
-        <title>HiParty - Fait la fête !</title>
+        <title>HiParty - Faites la fête !</title>
         <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
@@ -19,6 +19,7 @@
         <link href="/assets/css/styles.css" rel="stylesheet" />
     </head>
     <body id="page-top">
+    
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm" id="mainNav">
             <div class="container px-5">
@@ -178,8 +179,8 @@
             <div class="container px-5">
                 <div class="row gx-5 align-items-center justify-content-center justify-content-lg-between">
                     <div class="col-12 col-lg-5">
-                        <h2 class="display-4 lh-1 mb-4">Enter a new age of web design</h2>
-                        <p class="lead fw-normal text-muted mb-5 mb-lg-0">This section is perfect for featuring some information about your application, why it was built, the problem it solves, or anything else! There's plenty of space for text here, so don't worry about writing too much.</p>
+                        <h2 class="display-4 lh-1 mb-4">Accédez enfin au meilleures soirées</h2>
+                        <p class="lead fw-normal text-muted mb-5 mb-lg-0">Finis les soirées loupé par faute d'attention. Fins les soirées où on passe son temps à se demander quand est-ce qu'on s'amuse. Avec HiParty vous n'avez qu'à vous amusez et à profitez de votre soirée de rêve.</p>
                     </div>
                     <div class="col-sm-8 col-md-6">
                         <div class="px-5 px-sm-0"><img class="img-fluid rounded-circle" src="https://source.unsplash.com/u8Jn2rzYIps/900x900" alt="..." /></div>
@@ -187,19 +188,7 @@
                 </div>
             </div>
         </section>
-        <!-- Call to action section-->
-        <section class="cta">
-            <div class="cta-content">
-                <div class="container px-5">
-                    <h2 class="text-white display-1 lh-1 mb-4">
-                        Stop waiting.
-                        <br />
-                        Start building.
-                    </h2>
-                    <a class="btn btn-outline-light py-3 px-4 rounded-pill" href="https://startbootstrap.com/theme/new-age" target="_blank">Download for free</a>
-                </div>
-            </div>
-        </section>
+
         <!-- App badge section-->
         <section class="bg-gradient-primary-to-secondary" id="download">
             <div class="container px-5">
@@ -209,9 +198,16 @@
                     <a ><img class="app-badge" style="cursor: not-allowed; " src="/assets/img/app-store-badge.svg" alt="..." /></a>
                 </div> -->
                 <p class="text-center text-white font-alt mb-4">Envie d'être prévenu lors de la sortie de l'app ? Inscrivez-vous à notre Newsletter.</p>
-                <div class="d-flex flex-column flex-lg-row align-items-center justify-content-center">
+                {{ form_start(form) }}
+                <div class="d-flex flex-row align-items-center justify-content-center">
+
+                    {{ form_widget(form.email, {'attr': {'class': 'form-control mr-3', 'placeholder': 'exemple@mail.fr ', 'style': "width: 50%; margin-right: 20px;"}}) }}
+
+                    {{ form_widget(form.valider, {'attr': {'class': 'btn btn-outline-light ml-5 py-3 px-4 rounded-pill'}}) }}
+
                     
                 </div>
+                {{ form_end(form) }}
             </div>
         </section>
         <!-- Footer-->
@@ -219,15 +215,39 @@
             <div class="container px-5">
                 <div class="text-white-50 small">
                     <div class="mb-2">&copy; HiParty.</div>
-                    <a href="#!">Privacy</a>
+                    <!-- <a href="#!">Privacy</a>
                     <span class="mx-1">&middot;</span>
                     <a href="#!">Terms</a>
                     <span class="mx-1">&middot;</span>
-                    <a href="#!">FAQ</a>
+                    <a href="#!">FAQ</a>-->
                 </div>
             </div>
         </footer>
         
+        
+        {% for message in app.flashes('success') %}
+            <div class="toast align-items-center text-white bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; bottom: 3%; right:5%;">
+            <div class="d-flex">
+                <div class="toast-body">
+                {{message}}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('error') %}
+            <div class="toast align-items-center text-white bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; bottom: 3%; right:5%;">
+            <div class="d-flex">
+                <div class="toast-body">
+                {{message}}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            </div>
+        {% endfor %}
+        
+
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
