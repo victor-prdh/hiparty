@@ -43,7 +43,7 @@ security:
                 # target: app_any_route
             remember_me:
                 secret:   '%kernel.secret%'
-                lifetime: 31536000 # 1 week in seconds
+                lifetime: 31449600 # 1 year in seconds
                 path:     /
         refresh:
             pattern:  ^/api/token/refresh
@@ -55,3 +55,5 @@ security:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/users/, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/profil/, roles: ROLE_USER }
+        - { path: ^/dashboard/, roles: [ROLE_ADMIN, ROLE_CONTRIB] }
