@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -36,6 +37,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              }
  *          },
  * )
+ * @UniqueEntity(fields={"email"}, message="Cette adresse mail est déjà lié à un compte !")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -56,6 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Email(
      *     message = "L'adresse '{{ value }}' n'est pas valide."
      * )
+     * 
      * 
      *  @Groups({"user:read", "user:write"})
      */
@@ -85,6 +88,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255)
      * 
      * @Groups({"user:read", "user:write"})
+     * 
+     * @Assert\NotBlank(message="Merci de renseigner votre nom.")
      */
     private $name;
 
@@ -92,6 +97,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255)
      * 
      * @Groups({"user:read", "user:write"})
+     * 
+     * @Assert\NotBlank(message="Merci de renseigner votre prénom.")
      */
     private $firstname;
 
