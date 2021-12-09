@@ -1,15 +1,18 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_dash.html.twig' %}
 
-{% block title %}Hello VerifyController!{% endblock %}
+{% block title %}Devenez organisateur{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Faite vous vérifier ! ✅</h1>
+
+    <div class="page-heading">
+        <h1>Devenez organisateur</h1>
+    </div>
+
+
+        <p>Expliquez-nous pourquoi vous souhaitez devenir organisateur et pourquoi nous devrions vous accepter parmis nous.
+            Une candidature détaillé avec des liens vers vos réseaux sociaux ou votre site web par exemple aura de plus grandes chances d'être valider. 
+        </p>
 
     
     {{ form_start(form) }}
@@ -17,5 +20,5 @@
     {{ form_widget(form.content) }}
 
     {{ form_end(form) }}
-</div>
+
 {% endblock %}
