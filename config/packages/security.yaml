@@ -56,4 +56,5 @@ security:
         - { path: ^/api/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/users/, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/profil, roles: ROLE_USER }
+        - { path: ^/verifier, roles: ROLE_USER }
         - { path: ^/dashboard, roles: [ROLE_ADMIN, ROLE_CONTRIB] }
