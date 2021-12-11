@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\VerificationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=VerificationRepository::class)
@@ -19,6 +20,13 @@ class Verification
 
     /**
      * @ORM\Column(type="text")
+     * 
+     * @Assert\Length(
+     *      min = 50,
+     *      minMessage = "Merci de saisir au moins {{ limit }} caractères."
+     * )
+     * 
+     * @Assert\NotBlank(message = "Merci de remplir le champs pour votre demande")
      */
     private $content;
 
@@ -31,6 +39,11 @@ class Verification
      * @ORM\Column(type="datetime_immutable")
      */
     private $createdAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="verificationrequests")
+     */
+    private $FromUser;
 
     public function getId(): ?int
     {
@@ -72,4 +85,17 @@ class Verification
 
         return $this;
     }
+
+    public function getFromUser(): ?User
+    {
+        return $this->FromUser;
+    }
+
+    public function setFromUser(?User $FromUser): self
+    {
+        $this->FromUser = $FromUser;
+
+        return $this;
+    }
+
 }

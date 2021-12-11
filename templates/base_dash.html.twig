@@ -75,6 +75,18 @@
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
+
+            {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
             {% block body %}
             
             {% endblock %}

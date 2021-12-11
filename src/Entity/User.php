@@ -116,10 +116,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $parties;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Verification::class, mappedBy="FromUser")
+     */
+    private $verificationrequests;
+
     public function __construct()
     {
         $this->partyOrganized = new ArrayCollection();
         $this->parties = new ArrayCollection();
+        $this->verificationrequests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -314,6 +320,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->parties->removeElement($party)) {
             $party->removeParticipant($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Verification[]
+     */
+    public function getVerificationrequests(): Collection
+    {
+        return $this->verificationrequests;
+    }
+
+    public function addVerificationrequest(Verification $verificationrequest): self
+    {
+        if (!$this->verificationrequests->contains($verificationrequest)) {
+            $this->verificationrequests[] = $verificationrequest;
+            $verificationrequest->setFromUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVerificationrequest(Verification $verificationrequest): self
+    {
+        if ($this->verificationrequests->removeElement($verificationrequest)) {
+            // set the owning side to null (unless already changed)
+            if ($verificationrequest->getFromUser() === $this) {
+                $verificationrequest->setFromUser(null);
+            }
         }
 
         return $this;

@@ -9,16 +9,31 @@
         <h1>Devenez organisateur</h1>
     </div>
 
-
+    <div class="row">
+    <div class="col-12">
+        <div class="card">
+        <div class="card-body">
+        <div class="card-content row">
         <p>Expliquez-nous pourquoi vous souhaitez devenir organisateur et pourquoi nous devrions vous accepter parmis nous.
             Une candidature détaillé avec des liens vers vos réseaux sociaux ou votre site web par exemple aura de plus grandes chances d'être valider. 
         </p>
 
     
-    {{ form_start(form) }}
+        {{ form_start(form) }}
 
-    {{ form_widget(form.content) }}
+        {{ form_widget(form.content) }}
 
-    {{ form_end(form) }}
+        <span class="text-danger">{{ form_errors(form.content)}}</span>
+        
+
+        <input type="submit" value="Candidater" class="mt-5 btn btn-primary">
+
+        {{ form_end(form) }}
+    </div>
+</div>
+</div>
+</div>
+
+        
 
 {% endblock %}
