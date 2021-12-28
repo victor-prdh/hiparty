@@ -43,8 +43,7 @@
                         
                         <li class="sidebar-item 
                         {% if app.request.attributes.get('_route') in [
-                            'dashboard',
-                            'verify'
+                            'dashboard'
                         ] %} active{% endif %} ">
                             <a href="{{ path('dashboard') }}" class='sidebar-link'>
                                 <i class="bi bi-grid-fill"></i>
@@ -54,7 +53,8 @@
 
                         <li class="sidebar-item 
                         {% if app.request.attributes.get('_route') in [
-                            'profil'
+                            'profil',
+                            'verify'
                         ] %} active{% endif %} ">
                             <a href="{{ path('profil') }}" class='sidebar-link'>
                                 <i class="bi bi-person-fill"></i>
