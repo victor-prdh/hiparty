@@ -1,4 +1,4 @@
-# partydia
+# Hiparty
 
 Source code of https://hiparty.fr/
 
